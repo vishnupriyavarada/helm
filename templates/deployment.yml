@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  #labels of deployment resource
+  labels:
+    app: nginx
+    tier: frontend
+    purpose: deployment
+spec:
+  replicas: {{ .Values.deployment.replicas }} # 3 - assume this will change as you did not use HPA. Hence this property is templatized
+  selector:
+    matchLabels:
+      app: nginx
+      tier: frontend
+      purpose: deployment
+  template:
+    metadata:
+      labels:
+        app: nginx
+        tier: frontend
+        purpose: deployment
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:{{ .Values.deployment.imageVersion }} # nginx - version of the image will frequently change
+        ports:
+        - containerPort: 80
